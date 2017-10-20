@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 
+import fr.formation.tp18.adapter.RecyclerViewAdapter;
 import fr.formation.tp18.fragment.UsersListFragment;
+import fr.formation.tp18.listener.i.OnUserSelectedListener;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnUserSelectedListener {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -33,4 +35,15 @@ public class MainActivity extends Activity {
 
     }
 
+    @Override
+    public void setSelectedItem(int position) {
+        // Mise à jour de l'utilisateur selectionné dans la liste
+
+        UsersListFragment list = (UsersListFragment)
+                    getFragmentManager().findFragmentById(R.id.liste_fragment);
+        if ( list != null) {
+            ((RecyclerViewAdapter) list.getAdapter()).setSelectedItem(position);
+        }
+
+    }
 }

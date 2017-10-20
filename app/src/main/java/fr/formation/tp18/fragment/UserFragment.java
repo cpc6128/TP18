@@ -16,6 +16,7 @@
 package fr.formation.tp18.fragment;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import android.view.ViewGroup;
 import fr.formation.tp18.R;
 import fr.formation.tp18.adapter.UserPagerAdapter;
 import fr.formation.tp18.listener.ViewPagerOnPageChangeListener;
+import fr.formation.tp18.listener.i.OnUserSelectedListener;
 
 
 public class UserFragment extends Fragment {
@@ -32,6 +34,22 @@ public class UserFragment extends Fragment {
     private int mCurrentPosition = -1;
     private ViewPager pager;
     private UsersListFragment usersListe;
+
+    private OnUserSelectedListener mCallback;
+
+    @Override
+    public void onAttach(Context activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception.
+        try {
+            mCallback = (OnUserSelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnUserSelectedListener");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,7 +65,7 @@ public class UserFragment extends Fragment {
 
         usersListe = (UsersListFragment) getFragmentManager().findFragmentById(R.id.liste_fragment);
 
-        pager.addOnPageChangeListener(new ViewPagerOnPageChangeListener(usersListe));
+        pager.addOnPageChangeListener(new ViewPagerOnPageChangeListener(mCallback));
 
         return view;
     }
